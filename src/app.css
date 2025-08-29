@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  /* New simplified 3-layer architecture */
+  .workspace {
+    @apply flex items-center justify-center min-h-[400px] p-8 rounded-xl shadow-sm border border-gray-100;
+    /* Transparency checkerboard pattern */
+    background-image: 
+      linear-gradient(45deg, #f3f4f6 25%, transparent 25%),
+      linear-gradient(-45deg, #f3f4f6 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #f3f4f6 75%),
+      linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    background-color: #ffffff;
+  }
+
+  .background {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 400px;
+    min-height: 300px;
+  }
+
+  .subject {
+    @apply block;
+  }
+
+  .empty-state {
+    @apply flex flex-col items-center justify-center min-h-[400px] text-center space-y-4 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50/50;
+  }
+
+  .empty-icon {
+    @apply w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center;
+  }
+
+  .empty-content {
+    @apply space-y-2;
+  }
+
+  .bg-image {
+    @apply absolute inset-0 bg-cover bg-center bg-no-repeat;
+    z-index: 1;
+  }
+
+  .inner-image-wrapper {
+    @apply relative overflow-hidden;
+    z-index: 2;
+  }
+
+  .inner-image-wrapper img {
+    @apply block max-w-full h-auto;
+  }
+
+  /* Control Panel Styles */
+  .control-panel {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+
+  .control-section {
+    @apply space-y-4;
+  }
+
+  .control-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+
+  .slider {
+    @apply w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+  }
+
+  .slider::-webkit-slider-thumb {
+    @apply appearance-none w-4 h-4 bg-blue-600 rounded-full cursor-pointer;
+    @apply border-2 border-white shadow-md;
+  }
+
+  .slider::-moz-range-thumb {
+    @apply w-4 h-4 bg-blue-600 rounded-full cursor-pointer border-0;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg;
+    @apply hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    @apply transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg;
+    @apply hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+    @apply transition-colors duration-200;
+  }
+
+  .btn-tab {
+    @apply py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-200;
+  }
+
+  .btn-tab-active {
+    @apply border-blue-500 text-blue-600;
+  }
+
+  .btn-tab-inactive {
+    @apply border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300;
+  }
+
+  /* Color Swatch */
+  .color-swatch {
+    @apply w-10 h-10 rounded-lg border-2 cursor-pointer transition-all duration-200;
+    @apply hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+  }
+
+  .color-swatch-selected {
+    @apply border-blue-500 scale-105;
+  }
+
+  .color-swatch-unselected {
+    @apply border-gray-300 hover:border-gray-400;
+  }
+
+  /* Gradient Preset */
+  .gradient-preset {
+    @apply h-12 rounded-lg border-2 cursor-pointer transition-all duration-200;
+    @apply hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+  }
+
+  .gradient-preset-selected {
+    @apply border-blue-500 scale-105;
+  }
+
+  .gradient-preset-unselected {
+    @apply border-gray-300 hover:border-gray-400;
+  }
+  
+  /* Canvas-outer container for export */
+  .canvas-outer {
+  @apply block relative overflow-hidden bg-transparent;
+    /* Ensure it has proper dimensions for export */
+    min-width: 400px;
+    min-height: 300px;
+  }
+}

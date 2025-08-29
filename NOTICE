@@ -1,0 +1,14 @@
+betterShot
+Copyright (c) 2025, yuanjua
+
+This product includes software developed by the betterShot contributors.
+
+Third-party notices:
+- Svelte (MIT) https://github.com/sveltejs/svelte
+- Vite (MIT) https://github.com/vitejs/vite
+- Tailwind CSS (MIT) https://github.com/tailwindlabs/tailwindcss
+- tinycolor2 (MIT) https://github.com/bgrins/TinyColor
+- file-saver (MIT) https://github.com/eligrey/FileSaver.js
+- lucide-svelte (ISC) https://github.com/lucide-icons/lucide
+
+This NOTICE file is for informational purposes only and does not modify the Apache License, Version 2.0.

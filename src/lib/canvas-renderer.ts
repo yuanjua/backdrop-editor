@@ -127,15 +127,21 @@ export class CanvasRenderer {
     // Save context state
     this.ctx.save();
 
-      // Apply backdrop shadow if not applying to image
-      if (!imageHasShadow && shadow.opacity > 0) {
-        this.applyDropShadow(shadow);
-      }
+    // 1) Draw shadow first for backdrop (if shadow is not applied to image)
+    if (!imageHasShadow && shadow.opacity > 0) {
+      // Configure shadow
+      this.applyDropShadow(shadow);
+      // Shape that casts the shadow
+      this.createRoundedRect(backdropX, backdropY, backdropWidth, backdropHeight, outerRadius);
+      // Use opaque fill so the shadow is actually drawn (transparent fill would not render a shadow)
+      this.ctx.fillStyle = tinycolor(shadow.color).toRgbString();
+      this.ctx.fill();
+      // Reset shadow before drawing content
+      this.applyDropShadow({ opacity: 0, blur: 0, offsetX: 0, offsetY: 0, color: 'transparent' });
+    }
 
-    // Create backdrop path with rounded corners (or square when cropping JPEG)
+    // 2) Draw actual backdrop content on top
     this.createRoundedRect(backdropX, backdropY, backdropWidth, backdropHeight, outerRadius);
-
-      // Fill backdrop
     await this.fillBackdrop(backdrop, backdropX, backdropY, backdropWidth, backdropHeight, outerRadius);
 
     // Restore context state
@@ -185,15 +191,7 @@ export class CanvasRenderer {
       
       img.onload = () => {
         this.ctx.save();
-
-  // 1) Cast backdrop shadow by filling the rounded rect once
-        // Recreate the rounded rect path
-  this.createRoundedRect(x, y, width, height, radius);
-  // Use transparent fill to trigger shadow without painting
-  this.ctx.fillStyle = 'rgba(0,0,0,0)';
-        this.ctx.fill();
-
-        // 2) Clip to rounded rect and draw the background image inside
+        // Clip to rounded rect and draw the background image inside
   this.createRoundedRect(x, y, width, height, radius);
         this.ctx.clip();
         

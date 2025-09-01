@@ -17,9 +17,13 @@
     } else if (backdrop.fillType === 'transparent') {
       background = 'background-color: transparent;';
     } else if (backdrop.fillType === 'image' && backdrop.bgImage) {
-      background = `background-image: url(${backdrop.bgImage}); background-size: cover; background-position: center;`;
-      if (backdrop.bgImageBlurPx && backdrop.bgImageBlurPx > 0) {
-        background += ` filter: blur(${backdrop.bgImageBlurPx}px);`;
+      // For preview: when blur > 0, render a separate absolutely-positioned
+      // background layer so the subject image is not blurred.
+      const useInlineBg = !backdrop.bgImageBlurPx || backdrop.bgImageBlurPx <= 0;
+      if (useInlineBg) {
+        background = `background-image: url(${backdrop.bgImage}); background-size: cover; background-position: center;`;
+      } else {
+        background = 'background-color: transparent;';
       }
     }
 
@@ -32,6 +36,7 @@
       ${shadowStyle}
       ${background}
       position: relative;
+      ${backdrop.fillType === 'image' && backdrop.bgImage && backdrop.bgImageBlurPx && backdrop.bgImageBlurPx > 0 ? 'overflow: hidden;' : ''}
       display: flex;
       align-items: center;
       justify-content: center;
@@ -73,6 +78,13 @@
 <div class="workspace" role="region" aria-label="Editor canvas">
   {#if state.imageSrc}
     <div class="background" style={backgroundStyle}>
+      {#if backdrop.fillType === 'image' && backdrop.bgImage && backdrop.bgImageBlurPx && backdrop.bgImageBlurPx > 0}
+        <div
+          class="bg-image"
+          style={`background-image: url(${backdrop.bgImage}); background-size: cover; background-position: center; filter: blur(${backdrop.bgImageBlurPx}px); border-radius: ${backdrop.outerRadiusPx}px;`}
+          aria-hidden="true"
+        ></div>
+      {/if}
       <div class="subject-shadow-wrapper" style={subjectShadowWrapperStyle}>
         <div class="inner-image-wrapper" style={subjectClipWrapperStyle}>
           <img src={state.imageSrc} alt="Uploaded" class="subject" style={subjectImageStyle} />

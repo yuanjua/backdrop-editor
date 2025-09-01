@@ -132,18 +132,9 @@
     }
   }
 
-  // (SVG export helper removed during cleanup; can be re-added if needed.)
 </script>
 
-<div class="control-panel">
-  <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-    </svg>
-    Export Your Creation
-  </h3>
-  
-  <div class="space-y-4">
+<div class="space-y-4">
     <!-- Primary Export Buttons -->
     <div class="grid grid-cols-2 gap-3">
       <button
@@ -176,15 +167,11 @@
     </button>
   </div>
   
-  <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+  <div class="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
     <div class="text-xs text-blue-700 space-y-1">
-      <div class="flex justify-between">
-        <span>PNG: Transparency + 1:1 Preview</span>
-        <span>JPG: Cropped to Backdrop</span>
-      </div>
-      <p>• PNG: preserves transparency at preview resolution</p>
-      <p>• JPG: crops to the backdrop bounds with square corners</p>
-      <p>• Direct canvas rendering ensures WYSIWYG gradients & shadows</p>
+      <p>• PNG: transparent background</p>
+      <p>• JPG: backdrop with square corners and without shadow </p>
+      <p>• Copy: jpeg with white background beyond backdrop</p>
     </div>
   </div>
-</div>
+

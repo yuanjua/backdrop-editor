@@ -7,7 +7,7 @@
   $: hasImage = $editorStore.imageSrc !== null;
 </script>
 
-<div class="grid grid-cols-1 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 xl:grid-cols-5 gap-8 max-w-7xl mx-auto">
   <!-- Canvas Area -->
   <div class="xl:col-span-3">
     <div class="space-y-6">
@@ -16,19 +16,12 @@
         <ImageCanvas />
       </div>
       
-      <!-- Export Menu - Only show when image is uploaded -->
-      {#if hasImage}
-        <div class="flex justify-center">
-          <div class="w-full max-w-md">
-            <ExportMenu />
-          </div>
-        </div>
-      {/if}
+  <!-- Export moved to Control Panel tab -->
     </div>
   </div>
   
   <!-- Control Panel Sidebar -->
-  <div class="xl:col-span-1">
+  <div class="xl:col-span-2">
     <div class="sticky top-24">
       <ControlPanel />
     </div>

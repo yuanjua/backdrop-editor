@@ -116,7 +116,7 @@
   </div>
   
   {#if $presets.length === 0}
-    <div class="grid grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+    <div class="grid grid-cols-3 gap-3 max-h-[400px] overflow-y-auto">
       <!-- Save Current card shows initially when no presets exist -->
       <button
         class="group bg-white border border-dashed border-blue-300 rounded-lg overflow-hidden hover:border-blue-500 transition-colors flex flex-col"
@@ -130,12 +130,12 @@
           </div>
         </div>
         <div class="p-3">
-          <p class="text-xs text-gray-500">Adds your current backdrop and shadow as a new preset.</p>
+          <p class="text-xs text-gray-500">as preset</p>
         </div>
       </button>
     </div>
   {:else}
-    <div class="grid grid-cols-2 gap-3 max-h-[400px] overflow-y-auto">
+    <div class="grid grid-cols-3 gap-3 max-h-[400px] overflow-y-auto">
       {#each $presets as preset, idx}
         <div class="group bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-blue-300 transition-colors">
           <!-- Preview -->
@@ -180,10 +180,7 @@
             <div class="flex items-center justify-between">
               <div class="flex-1">
                 <h4 class="text-sm font-medium text-gray-800">{preset.name}</h4>
-                <p class="text-xs text-gray-500 capitalize">
-                  {preset.backdrop.fillType} 
-                  {#if preset.imageHasShadow}• Image Shadow{/if}
-                </p>
+                <!-- Removed secondary meta text per requirement -->
               </div>
               
               <button
@@ -211,7 +208,7 @@
           </div>
         </div>
         <div class="p-3">
-          <p class="text-xs text-gray-500">Adds your current backdrop and shadow as a new preset.</p>
+          <p class="text-xs text-gray-500">in your browser cache</p>
         </div>
       </button>
     </div>

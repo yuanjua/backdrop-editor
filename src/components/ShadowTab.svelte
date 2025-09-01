@@ -1,13 +1,15 @@
 <script>
   import { editorStore, updateShadow, setImageHasShadow } from '../stores/editor';
   import tinycolor from 'tinycolor2';
+  import ColorField from './ColorField.svelte';
 
   $: shadow = $editorStore.shadow;
   $: imageHasShadow = $editorStore.imageHasShadow;
 
   function handleColorChange(event) {
-    const target = event.target;
-    updateShadow({ color: target.value });
+    // Handle both native input events and ColorField custom events
+    const value = event.detail || event.target.value;
+    updateShadow({ color: value });
   }
 
   function handleOpacityChange(event) {
@@ -56,166 +58,128 @@
       Shadow Controls
     </h3>
     
-    <div class="space-y-6">
-      <!-- Color and Opacity -->
-      <div class="grid grid-cols-1 gap-6">
-        <div>
-          <label for="shadow-color" class="control-label">
-            Shadow Color
-          </label>
-          <div class="flex items-center space-x-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Left column: controls and preview -->
+      <div class="space-y-6">
+        <!-- Color and Opacity -->
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <label for="shadow-opacity" class="control-label flex items-center justify-between">
+              <span>Opacity</span>
+              <span class="text-blue-600 font-medium">{Math.round(shadow.opacity * 100)}%</span>
+            </label>
             <input
-              id="shadow-color"
-              type="color"
-              value={shadow.color}
-              on:input={handleColorChange}
-              class="w-12 h-10 rounded-lg border-2 border-gray-300 cursor-pointer"
-            />
-            <input
-              type="text"
-              value={shadow.color}
-              on:input={handleColorChange}
-              class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="#000000"
+              id="shadow-opacity"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={shadow.opacity}
+              on:input={handleOpacityChange}
+              class="slider"
             />
           </div>
         </div>
 
-        <div>
-          <label for="shadow-opacity" class="control-label flex items-center justify-between">
-            <span>Opacity</span>
-            <span class="text-blue-600 font-medium">{Math.round(shadow.opacity * 100)}%</span>
-          </label>
-          <input
-            id="shadow-opacity"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={shadow.opacity}
-            on:input={handleOpacityChange}
-            class="slider"
-          />
-        </div>
-      </div>
-
-      <!-- Preview -->
-      <div class="bg-gray-50 p-6 rounded-xl border">
-        <div class="text-sm text-gray-600 mb-4 font-medium">Shadow Preview</div>
-        <div class="flex justify-center">
-          <div 
-            class="w-20 h-20 bg-white rounded-xl transition-all duration-200"
-            style="box-shadow: {shadow.inset ? 'inset ' : ''}{shadow.offsetX}px {shadow.offsetY}px {shadow.blur}px {shadow.spread}px {shadowPreview}"
-          ></div>
-        </div>
-      </div>
-
-      <!-- Position Controls -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label for="shadow-offset-x" class="control-label flex items-center justify-between">
-            <span>Offset X</span>
-            <span class="text-blue-600 font-medium">{shadow.offsetX}px</span>
-          </label>
-          <input
-            id="shadow-offset-x"
-            type="range"
-            min="-50"
-            max="50"
-            value={shadow.offsetX}
-            on:input={handleOffsetXChange}
-            class="slider"
-          />
+        <!-- Preview -->
+        <div class="bg-gray-50 p-6 rounded-xl border">
+          <div class="text-sm text-gray-600 mb-4 font-medium">Shadow Preview</div>
+          <div class="flex justify-center">
+            <div 
+              class="w-20 h-20 bg-white rounded-xl transition-all duration-200"
+              style="box-shadow: {shadow.inset ? 'inset ' : ''}{shadow.offsetX}px {shadow.offsetY}px {shadow.blur}px {shadow.spread}px {shadowPreview}"
+            ></div>
+          </div>
         </div>
 
-        <div>
-          <label for="shadow-offset-y" class="control-label flex items-center justify-between">
-            <span>Offset Y</span>
-            <span class="text-blue-600 font-medium">{shadow.offsetY}px</span>
-          </label>
-          <input
-            id="shadow-offset-y"
-            type="range"
-            min="-50"
-            max="50"
-            value={shadow.offsetY}
-            on:input={handleOffsetYChange}
-            class="slider"
-          />
-        </div>
-      </div>
-
-      <!-- Effect Controls -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label for="shadow-blur" class="control-label flex items-center justify-between">
-            <span>Blur</span>
-            <span class="text-blue-600 font-medium">{shadow.blur}px</span>
-          </label>
-          <input
-            id="shadow-blur"
-            type="range"
-            min="0"
-            max="100"
-            value={shadow.blur}
-            on:input={handleBlurChange}
-            class="slider"
-          />
-        </div>
-
-        <div>
-          <label for="shadow-spread" class="control-label flex items-center justify-between">
-            <span>Spread</span>
-            <span class="text-blue-600 font-medium">{shadow.spread}px</span>
-          </label>
-          <input
-            id="shadow-spread"
-            type="range"
-            min="-20"
-            max="20"
-            value={shadow.spread}
-            on:input={handleSpreadChange}
-            class="slider"
-          />
-        </div>
-      </div>
-
-      <!-- Shadow Type -->
-      <div class="space-y-3">
-        <div class="bg-gray-50 p-4 rounded-lg">
-          <label class="flex items-center space-x-3 cursor-pointer">
+        <!-- Position Controls -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="shadow-offset-x" class="control-label flex items-center justify-between">
+              <span>Offset X</span>
+              <span class="text-blue-600 font-medium">{shadow.offsetX}px</span>
+            </label>
             <input
-              type="checkbox"
-              checked={shadow.inset}
-              on:change={handleInsetToggle}
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              id="shadow-offset-x"
+              type="range"
+              min="-50"
+              max="50"
+              value={shadow.offsetX}
+              on:input={handleOffsetXChange}
+              class="slider"
             />
-            <div class="flex-1">
-              <span class="text-sm font-medium text-gray-900">Inset Shadow</span>
-              <p class="text-xs text-gray-500">Creates an inner shadow effect</p>
-            </div>
-          </label>
-        </div>
-        
-        <!-- Image Shadow Toggle -->
-        <div class="bg-blue-50 p-4 rounded-lg">
-          <label class="flex items-center space-x-3 cursor-pointer">
+          </div>
+
+          <div>
+            <label for="shadow-offset-y" class="control-label flex items-center justify-between">
+              <span>Offset Y</span>
+              <span class="text-blue-600 font-medium">{shadow.offsetY}px</span>
+            </label>
             <input
-              type="checkbox"
-              checked={imageHasShadow}
-              on:change={handleImageShadowToggle}
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              id="shadow-offset-y"
+              type="range"
+              min="-50"
+              max="50"
+              value={shadow.offsetY}
+              on:input={handleOffsetYChange}
+              class="slider"
             />
-            <div class="flex-1">
-              <span class="text-sm font-medium text-blue-900">Apply Shadow to Image</span>
-              <p class="text-xs text-blue-700">Adds shadow to the image instead of backdrop</p>
-            </div>
-          </label>
+          </div>
         </div>
+
+        <!-- Effect Controls -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="shadow-blur" class="control-label flex items-center justify-between">
+              <span>Blur</span>
+              <span class="text-blue-600 font-medium">{shadow.blur}px</span>
+            </label>
+            <input
+              id="shadow-blur"
+              type="range"
+              min="0"
+              max="100"
+              value={shadow.blur}
+              on:input={handleBlurChange}
+              class="slider"
+            />
+          </div>
+
+          <div>
+            <label for="shadow-spread" class="control-label flex items-center justify-between">
+              <span>Spread</span>
+              <span class="text-blue-600 font-medium">{shadow.spread}px</span>
+            </label>
+            <input
+              id="shadow-spread"
+              type="range"
+              min="-20"
+              max="20"
+              value={shadow.spread}
+              on:input={handleSpreadChange}
+              class="slider"
+            />
+          </div>
+        </div>
+
+        <!-- (Toggles moved to right column) -->
       </div>
 
-      <!-- Shadow Presets -->
+      <!-- Right column: Toggles + Preset buttons -->
       <div class="space-y-3">
+        <!-- Shadow Color -->
+        <h4 class="text-sm font-medium text-gray-700">Shadow Color</h4>
+        <div class="space-y-4">
+          <ColorField
+            id="shadow-color"
+            label=""
+            bind:value={shadow.color}
+            placeholder="#ff6b6b"
+            on:input={handleColorChange}
+          />
+        </div>
+
+        <!-- Shadow Presets -->
         <h4 class="text-sm font-medium text-gray-700">Quick Presets</h4>
         <div class="grid grid-cols-2 gap-2">
           <button
@@ -242,6 +206,42 @@
           >
             None
           </button>
+        </div>
+
+        <!-- Shadow Type -->
+        <div class="space-y-3">
+          <h4 class="text-sm font-medium text-gray-700">Shadow Type</h4>
+          <div class="bg-gray-50 p-4 rounded-lg">
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={shadow.inset}
+                on:change={handleInsetToggle}
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              />
+              <div class="flex-1">
+                <span class="text-sm font-medium text-gray-900">Inset Shadow</span>
+                <p class="text-xs text-gray-500">Creates an inner shadow effect</p>
+              </div>
+            </label>
+          </div>
+          
+          
+          <!-- Image Shadow Toggle -->
+          <div class="bg-blue-50 p-4 rounded-lg">
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={imageHasShadow}
+                on:change={handleImageShadowToggle}
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              />
+              <div class="flex-1">
+                <span class="text-sm font-medium text-blue-900">Apply to Image</span>
+                <p class="text-xs text-blue-700">Adds shadow to the image instead of backdrop</p>
+              </div>
+            </label>
+          </div>
         </div>
       </div>
     </div>

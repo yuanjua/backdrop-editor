@@ -7,9 +7,9 @@
   $: hasImage = $editorStore.imageSrc !== null;
 </script>
 
-<div class="grid grid-cols-1 xl:grid-cols-5 gap-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 xl:grid-cols-10 gap-10 max-w-9xl mx-auto">
   <!-- Canvas Area -->
-  <div class="xl:col-span-3">
+  <div class="xl:col-span-6">
     <div class="space-y-6">
       <!-- Canvas -->
       <div class="canvas-outer bg-transparent" style="min-height: 400px;">
@@ -21,7 +21,7 @@
   </div>
   
   <!-- Control Panel Sidebar -->
-  <div class="xl:col-span-2">
+  <div class="xl:col-span-4">
     <div class="sticky top-24">
       <ControlPanel />
     </div>

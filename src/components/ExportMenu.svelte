@@ -167,11 +167,11 @@
     </button>
   </div>
   
-  <div class="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200">
-    <div class="text-xs text-blue-700 space-y-1">
-      <p>• PNG: transparent background</p>
-      <p>• JPG: backdrop with square corners and without shadow </p>
-      <p>• Copy: jpeg with white background beyond backdrop</p>
-    </div>
+  <div class="mt-2 p-3 bg-blue-50 rounded-lg">
+    <ul class="text-xs text-blue-800 space-y-1 list-disc list-inside">
+      <li><strong>PNG:</strong> Exports with a transparent background and shadow.</li>
+      <li><strong>JPG:</strong> Exports as a standard rectangle with a solid background.</li>
+      <li><strong>Copy:</strong> Copies the image with its shadow onto a white background.</li>
+    </ul>
   </div>
-
+  

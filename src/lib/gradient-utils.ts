@@ -77,6 +77,19 @@ export function swapGradientColors(g: GradientConfig): GradientConfig {
   return { ...g, stops: swappedStops };
 }
 
+// Helper function to shuffle an array (Fisher–Yates)
+function shuffle<T>(array: T[]): T[] {
+  let currentIndex = array.length;
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    const temp = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temp;
+  }
+  return array;
+}
+
 export function rotateGradient(g: GradientConfig, deg = 90): GradientConfig {
   if (g.kind === 'linear') {
     // Rotate the angle for linear gradients
@@ -93,8 +106,9 @@ export function rotateGradient(g: GradientConfig, deg = 90): GradientConfig {
     const newCy = centerY + radius * Math.sin(newAngle);
     return { ...g, cx: Math.max(0, Math.min(100, newCx)), cy: Math.max(0, Math.min(100, newCy)) };
   } else if (g.kind === 'mesh') {
-    // For mesh gradients, create a new randomized layout (since they don't have a clear rotation axis)
-    return generateRandomGradient();
+    // For mesh gradients, keep colors but shuffle stops to create a new layout
+    const shuffledStops = shuffle([...g.stops]);
+    return { ...g, stops: shuffledStops };
   }
   return g;
 }

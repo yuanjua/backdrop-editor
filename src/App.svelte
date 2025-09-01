@@ -87,7 +87,7 @@
   <footer class="border-t border-gray-200 bg-white mt-16">
     <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div class="flex items-center justify-between text-sm text-gray-600">
-        <p>This website does not collect data and processes images locally in the browser</p>
+        <p>© 2025 yuanjua</p>
 
         <div class="flex items-center space-x-4">
           <a

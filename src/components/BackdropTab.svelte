@@ -457,6 +457,9 @@
             </div>
           </div>
         </div>
+        <p class="text-xs text-gray-500">
+          ✨ For mesh gradients, Rotate and Swap create a new random look!
+        </p>
       {/if}
     </div>
   </div>

@@ -164,7 +164,7 @@
             id="inset"
             type="range"
             min="0"
-            max="200"
+            max="500"
             value={backdrop.insetPx}
             on:input={handleInsetChange}
             class="slider"
@@ -180,7 +180,7 @@
             id="outer-radius"
             type="range"
             min="0"
-            max="200"
+            max="500"
             value={backdrop.outerRadiusPx}
             on:input={handleOuterRadiusChange}
             class="slider"
@@ -196,7 +196,7 @@
             id="inner-radius"
             type="range"
             min="0"
-            max="200"
+            max="500"
             value={backdrop.innerRadiusPx}
             on:input={handleInnerRadiusChange}
             class="slider"

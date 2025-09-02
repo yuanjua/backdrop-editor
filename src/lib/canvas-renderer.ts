@@ -80,8 +80,8 @@ export class CanvasRenderer {
     const offsetX = shadowPadding;
     const offsetY = shadowPadding;
 
-    // If exporting JPEG with transparent backdrop, fill white background
-    if (format === 'jpeg' && state.backdrop.fillType === 'transparent') {
+    // For JPEG, always fill a white background to avoid black corners from alpha
+    if (format === 'jpeg') {
       this.ctx.save();
       this.ctx.fillStyle = '#ffffff';
       this.ctx.fillRect(0, 0, this.canvas.width / scale, this.canvas.height / scale);
@@ -116,7 +116,7 @@ export class CanvasRenderer {
 
   private async renderBackdrop(state: EditorState, x: number, y: number, width: number, height: number, opts: { cropToBackdrop: boolean; format: 'png'|'jpeg' }): Promise<void> {
     const { backdrop, shadow, imageHasShadow } = state;
-    const outerRadius = opts.cropToBackdrop && opts.format === 'jpeg' ? 0 : backdrop.outerRadiusPx;
+    const outerRadius = backdrop.outerRadiusPx;
     
     // Calculate backdrop dimensions with inset
     const backdropX = x;
@@ -317,15 +317,16 @@ export class CanvasRenderer {
   }
 
   private roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
+    const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + width - r, y);
+    ctx.arcTo(x + width, y, x + width, y + r, r);
+    ctx.lineTo(x + width, y + height - r);
+    ctx.arcTo(x + width, y + height, x + width - r, y + height, r);
+    ctx.lineTo(x + r, y + height);
+    ctx.arcTo(x, y + height, x, y + height - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y, x + r, y, r);
   }
 
   private applyDropShadow(shadow: any): void {
@@ -418,15 +419,16 @@ export class CanvasRenderer {
 
   private createRoundedRect(x: number, y: number, width: number, height: number, radius: number): void {
     this.ctx.beginPath();
-    this.ctx.moveTo(x + radius, y);
-    this.ctx.lineTo(x + width - radius, y);
-    this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    this.ctx.lineTo(x + width, y + height - radius);
-    this.ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    this.ctx.lineTo(x + radius, y + height);
-    this.ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    this.ctx.lineTo(x, y + radius);
-    this.ctx.quadraticCurveTo(x, y, x + radius, y);
+    const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+    this.ctx.moveTo(x + r, y);
+    this.ctx.lineTo(x + width - r, y);
+    this.ctx.arcTo(x + width, y, x + width, y + r, r);
+    this.ctx.lineTo(x + width, y + height - r);
+    this.ctx.arcTo(x + width, y + height, x + width - r, y + height, r);
+    this.ctx.lineTo(x + r, y + height);
+    this.ctx.arcTo(x, y + height, x, y + height - r, r);
+    this.ctx.lineTo(x, y + r);
+    this.ctx.arcTo(x, y, x + r, y, r);
     this.ctx.closePath();
   }
 

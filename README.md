@@ -2,6 +2,8 @@
 
 A web tool for adding backdrop, shadow and round corners to beautify your screenshot or other images.
 
+Deployed on [Vercel](https://backdrop-editor.vercel.app/) and [Tencent EdgeOne](https://backdrop-editor.yuanzhou.qzz.io/).
+
 ## User Interface
 
 This image is also created with current tool!
